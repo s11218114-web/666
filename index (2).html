@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Designer Business Card | 設計師個人名片</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'Inter', 'Noto Sans TC', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    },
+                    boxShadow: {
+                        'brutal-dark': '6px 6px 0px 0px #ffffff',
+                        'brutal-light': '6px 6px 0px 0px #000000',
+                        'brutal-hover-dark': '2px 2px 0px 0px #ffffff',
+                        'brutal-hover-light': '2px 2px 0px 0px #000000',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+TC:wght@300;500;700;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Custom noise and grid pattern for brutalist minimalism */
+        .bg-grid-pattern-dark {
+            background-size: 24px 24px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        }
+        .bg-grid-pattern-light {
+            background-size: 24px 24px;
+            background-image: 
+                linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+        }
+        
+        /* Smooth transitions for theme toggle */
+        * {
+            transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+        }
+
+        /* Card 3D Perspective container */
+        .perspective-container {
+            perspective: 1000px;
+        }
+
+        .card-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.15s ease-out, box-shadow 0.25s ease;
+        }
+
+        /* Pulse glow for status badge */
+        @keyframes pulse-dot {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.6; }
+        }
+        .status-pulse {
+            animation: pulse-dot 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-black dark:bg-black text-white dark:text-white flex flex-col justify-between items-center p-4 sm:p-6 font-sans relative overflow-x-hidden selection:bg-white selection:text-black transition-colors duration-300" id="bodyContainer">
+
+    <!-- Background Grid Texture -->
+    <div class="absolute inset-0 bg-grid-pattern-dark pointer-events-none z-0" id="gridBg"></div>
+
+    <!-- Top Bar Navigation -->
+    <header class="w-full max-w-lg flex justify-between items-center z-10 py-2 mb-4">
+        <!-- Brand / Logo -->
+        <div class="flex items-center gap-2">
+            <span class="w-3 h-3 bg-white dark:bg-white inline-block border border-black dark:border-white"></span>
+            <span class="font-mono text-xs tracking-widest uppercase font-bold text-white dark:text-white" id="brandText">CARD // 001</span>
+        </div>
+
+        <!-- Mode Switcher -->
+        <button id="themeToggleBtn" aria-label="Toggle Mode" class="px-3 py-1.5 border-2 border-white dark:border-white text-xs font-mono tracking-wider font-bold hover:bg-white hover:text-black dark:hover:bg-white dark:hover:text-black transition-all flex items-center gap-2 shadow-[3px_3px_0px_0px_#ffffff] hover:shadow-none translate-x-0 hover:translate-x-[2px] hover:translate-y-[2px]">
+            <i class="fa-solid fa-sun text-sm hidden dark:inline"></i>
+            <i class="fa-solid fa-moon text-sm inline dark:hidden"></i>
+            <span id="themeBtnText">LIGHT MODE</span>
+        </button>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="w-full max-w-md my-auto z-10 perspective-container">
+        
+        <!-- The High Contrast Business Card -->
+        <div id="businessCard" class="card-3d bg-black dark:bg-black border-2 border-white dark:border-white p-6 sm:p-8 rounded-none relative shadow-brutal-dark dark:shadow-brutal-dark">
+            
+            <!-- Top Status Indicator & Corner Accent -->
+            <div class="flex justify-between items-start mb-6 border-b-2 border-white dark:border-white pb-4">
+                <div class="inline-flex items-center gap-2 border border-white/40 px-2.5 py-1 text-[11px] font-mono tracking-wider uppercase bg-black text-white">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 status-pulse"></span>
+                    <span>接案中 AVAILABLE</span>
+                </div>
+                <div class="font-mono text-xs text-neutral-400">
+                    TAIPEI / TW
+                </div>
+            </div>
+
+            <!-- Avatar Section -->
+            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 mb-6">
+                <!-- Avatar Placeholder Container -->
+                <div class="relative group">
+                    <div class="w-28 h-28 border-2 border-white dark:border-white overflow-hidden bg-neutral-900 relative flex items-center justify-center shadow-[4px_4px_0px_0px_#ffffff]" id="avatarBox">
+                        <!-- Minimalist Circular Smiley Face SVG Graphic -->
+                        <svg id="avatarSvg" class="w-full h-full text-white p-3" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Face Outline -->
+                            <circle cx="50" cy="50" r="42" stroke="currentColor" stroke-width="5" fill="none"/>
+                            <!-- Left & Right Eyes -->
+                            <circle cx="35" cy="40" r="5" fill="currentColor"/>
+                            <!-- Right Eye -->
+                            <circle cx="65" cy="40" r="5" fill="currentColor"/>
+                            <!-- Smile Arc -->
+                            <path d="M 30 62 A 22 22 0 0 0 70 62" stroke="currentColor" stroke-width="5" stroke-linecap="round" fill="none"/>
+                        </svg>
+                        
+                        <!-- Uploaded Image (Hidden by default) -->
+                        <img id="avatarImage" src="" alt="Avatar" class="w-full h-full object-cover hidden">
+                        
+                        <!-- Hover Overlay to Change Avatar Placeholder -->
+                        <button id="changeAvatarBtn" title="變更頭像 / Switch Avatar" class="absolute inset-0 bg-black/80 text-white opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-xs font-mono gap-1 cursor-pointer">
+                            <i class="fa-solid fa-camera text-base"></i>
+                            <span>換圖 / SWAP</span>
+                        </button>
+                    </div>
+                    <!-- Hidden file input for custom photo upload -->
+                    <input type="file" id="avatarFileInput" accept="image/*" class="hidden">
+                </div>
+
+                <!-- Name & Title Info -->
+                <div class="text-center sm:text-left flex-1">
+                    <div class="inline-block px-1.5 py-0.5 bg-white text-black font-mono text-[10px] font-bold tracking-widest uppercase mb-1">
+                        VISUAL & UI/UX
+                    </div>
+                    <h1 class="text-2xl sm:text-3xl font-bold tracking-tight uppercase font-sans text-white dark:text-white leading-tight">
+                        羅文慧
+                    </h1>
+                    <h2 class="text-xs sm:text-sm font-mono text-neutral-400 mt-0.5 tracking-wider uppercase">
+                        WEN-HUI LUO
+                    </h2>
+                    <p class="text-xs font-mono font-semibold text-white dark:text-white mt-2 border-l-2 border-white dark:border-white pl-2 py-0.5 text-left inline-block sm:block">
+                        資深視覺與介面設計師<br>
+                        <span class="text-neutral-400 font-normal">Senior Visual Designer</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Short Bio / Core Competencies -->
+            <div class="mb-6 space-y-2">
+                <p class="text-xs sm:text-sm text-neutral-300 dark:text-neutral-300 leading-relaxed font-sans">
+                    專注於極簡主義、品牌識別系統與數位產品介面設計。以高度對比與純粹幾何語彙形塑簡潔極致的視覺體驗。
+                </p>
+                <!-- Skill Tags -->
+                <div class="flex flex-wrap gap-1.5 pt-2">
+                    <span class="text-[10px] font-mono border border-white/40 px-2 py-0.5 hover:bg-white hover:text-black cursor-default transition-colors">UI/UX DESIGN</span>
+                    <span class="text-[10px] font-mono border border-white/40 px-2 py-0.5 hover:bg-white hover:text-black cursor-default transition-colors">BRANDING</span>
+                    <span class="text-[10px] font-mono border border-white/40 px-2 py-0.5 hover:bg-white hover:text-black cursor-default transition-colors">TYPOGRAPHY</span>
+                    <span class="text-[10px] font-mono border border-white/40 px-2 py-0.5 hover:bg-white hover:text-black cursor-default transition-colors">DESIGN SYSTEM</span>
+                </div>
+            </div>
+
+            <!-- Main CTA Button Section -->
+            <div class="space-y-3 pt-2 border-t-2 border-white dark:border-white">
+                <!-- Primary Action Button -->
+                <button id="primaryContactBtn" class="w-full py-3.5 px-4 bg-white text-black dark:bg-white dark:text-black font-mono font-bold text-sm tracking-wider uppercase border-2 border-white dark:border-white hover:bg-black hover:text-white dark:hover:bg-black dark:hover:text-white transition-all flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_#888888] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>聯絡我 CONTACT ME</span>
+                </button>
+
+                <!-- Secondary Quick Action: Copy Email Direct -->
+                <button id="copyEmailBtn" class="w-full py-2.5 px-4 bg-transparent text-white dark:text-white font-mono text-xs tracking-wider border border-white/40 hover:border-white transition-all flex items-center justify-between group">
+                    <span class="flex items-center gap-2">
+                        <i class="fa-regular fa-envelope text-neutral-400 group-hover:text-white"></i>
+                        <span>wenhui.luo.design@example.com</span>
+                    </span>
+                    <span class="text-[10px] uppercase underline tracking-widest text-neutral-400 group-hover:text-white">複製 COPY</span>
+                </button>
+            </div>
+
+            <!-- Social Links Row -->
+            <div class="mt-6 pt-4 border-t border-white/20 flex items-center justify-between">
+                <span class="text-[10px] font-mono text-neutral-400 uppercase tracking-widest">CONNECT //</span>
+                <div class="flex items-center gap-3 text-base">
+                    <a href="https://github.com" target="_blank" rel="noopener" title="GitHub" class="w-8 h-8 border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-black transition-colors">
+                        <i class="fa-brands fa-github"></i>
+                    </a>
+                    <a href="https://behance.net" target="_blank" rel="noopener" title="Behance" class="w-8 h-8 border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-black transition-colors">
+                        <i class="fa-brands fa-behance"></i>
+                    </a>
+                    <a href="https://dribbble.com" target="_blank" rel="noopener" title="Dribbble" class="w-8 h-8 border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-black transition-colors">
+                        <i class="fa-brands fa-dribbble"></i>
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" rel="noopener" title="LinkedIn" class="w-8 h-8 border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-black transition-colors">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Contact Info Modal -->
+    <div id="contactModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-black border-2 border-white p-6 sm:p-8 max-w-sm w-full relative shadow-[8px_8px_0px_0px_#ffffff] transform scale-95 transition-transform duration-300 text-white" id="modalContent">
+            
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center border-b-2 border-white pb-3 mb-6">
+                <h3 class="font-mono text-base font-bold tracking-wider uppercase">GET IN TOUCH //</h3>
+                <button id="closeModalBtn" class="w-7 h-7 border border-white flex items-center justify-center hover:bg-white hover:text-black transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Contact List -->
+            <div class="space-y-4 font-mono text-xs">
+                <div>
+                    <label class="text-neutral-400 block mb-1 text-[10px] tracking-widest uppercase">EMAIL ADDRESS</label>
+                    <div class="p-2.5 border border-white bg-neutral-950 flex justify-between items-center">
+                        <span class="select-all">wenhui.luo.design@example.com</span>
+                        <button class="copy-modal-email text-neutral-400 hover:text-white" title="Copy Email">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-neutral-400 block mb-1 text-[10px] tracking-widest uppercase">PHONE / MOBILE</label>
+                    <div class="p-2.5 border border-white bg-neutral-950 flex justify-between items-center">
+                        <span>+886 912 345 678</span>
+                        <a href="tel:+886912345678" class="text-neutral-400 hover:text-white">
+                            <i class="fa-solid fa-phone"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-neutral-400 block mb-1 text-[10px] tracking-widest uppercase">LOCATION</label>
+                    <div class="p-2.5 border border-white bg-neutral-950">
+                        <span>Taipei City, Taiwan (UTC+8)</span>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-neutral-400 block mb-1 text-[10px] tracking-widest uppercase">PORTFOLIO SITE</label>
+                    <a href="https://example.com" target="_blank" class="p-2.5 border border-white bg-neutral-950 flex justify-between items-center hover:bg-white hover:text-black transition-colors block">
+                        <span>www.wenhuiluo-design.com</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Close Action Button -->
+            <button id="closeModalBtnBottom" class="w-full mt-6 py-2.5 bg-white text-black font-mono font-bold text-xs uppercase hover:bg-neutral-200 transition-colors">
+                關閉 CLOSE
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toastNotification" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-white text-black border-2 border-black font-mono text-xs font-bold px-4 py-2.5 z-50 shadow-[4px_4px_0px_0px_#000000] transition-all duration-300 opacity-0 translate-y-8 pointer-events-none flex items-center gap-2">
+        <i class="fa-solid fa-check-circle"></i>
+        <span id="toastText">已複製至剪貼簿！ COPIED!</span>
+    </div>
+
+    <!-- Footer Credit -->
+    <footer class="w-full max-w-lg text-center z-10 py-4 border-t border-white/10 mt-6">
+        <p class="font-mono text-[10px] text-neutral-400 tracking-widest uppercase">
+            © 2026 WEN-HUI LUO • MINIMALIST MONOCHROME CARD
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Element References
+            const themeToggleBtn = document.getElementById('themeToggleBtn');
+            const themeBtnText = document.getElementById('themeBtnText');
+            const bodyContainer = document.getElementById('bodyContainer');
+            const gridBg = document.getElementById('gridBg');
+            const businessCard = document.getElementById('businessCard');
+            const brandText = document.getElementById('brandText');
+            
+            const primaryContactBtn = document.getElementById('primaryContactBtn');
+            const copyEmailBtn = document.getElementById('copyEmailBtn');
+            const contactModal = document.getElementById('contactModal');
+            const modalContent = document.getElementById('modalContent');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const closeModalBtnBottom = document.getElementById('closeModalBtnBottom');
+            
+            const toastNotification = document.getElementById('toastNotification');
+            const toastText = document.getElementById('toastText');
+            
+            const avatarBox = document.getElementById('avatarBox');
+            const changeAvatarBtn = document.getElementById('changeAvatarBtn');
+            const avatarFileInput = document.getElementById('avatarFileInput');
+            const avatarSvg = document.getElementById('avatarSvg');
+            const avatarImage = document.getElementById('avatarImage');
+
+            let isDarkMode = true;
+
+            // 1. Theme Switcher (High Contrast Dark <-> Light)
+            themeToggleBtn.addEventListener('click', () => {
+                isDarkMode = !isDarkMode;
+                
+                if (isDarkMode) {
+                    // Dark Mode Styling
+                    document.documentElement.classList.add('dark');
+                    bodyContainer.className = "min-h-screen bg-black text-white flex flex-col justify-between items-center p-4 sm:p-6 font-sans relative overflow-x-hidden selection:bg-white selection:text-black transition-colors duration-300";
+                    gridBg.className = "absolute inset-0 bg-grid-pattern-dark pointer-events-none z-0";
+                    
+                    themeToggleBtn.className = "px-3 py-1.5 border-2 border-white text-xs font-mono tracking-wider font-bold hover:bg-white hover:text-black transition-all flex items-center gap-2 shadow-[3px_3px_0px_0px_#ffffff] hover:shadow-none translate-x-0 hover:translate-x-[2px] hover:translate-y-[2px]";
+                    themeBtnText.textContent = "LIGHT MODE";
+
+                    businessCard.className = "card-3d bg-black border-2 border-white p-6 sm:p-8 rounded-none relative shadow-brutal-dark";
+                    
+                    // Update inner cards/borders
+                    updateElementClasses('dark');
+                } else {
+                    // Light Mode Styling (Inverted High-Contrast Monochrome)
+                    document.documentElement.classList.remove('dark');
+                    bodyContainer.className = "min-h-screen bg-white text-black flex flex-col justify-between items-center p-4 sm:p-6 font-sans relative overflow-x-hidden selection:bg-black selection:text-white transition-colors duration-300";
+                    gridBg.className = "absolute inset-0 bg-grid-pattern-light pointer-events-none z-0";
+                    
+                    themeToggleBtn.className = "px-3 py-1.5 border-2 border-black text-xs font-mono tracking-wider font-bold hover:bg-black hover:text-white transition-all flex items-center gap-2 shadow-[3px_3px_0px_0px_#000000] hover:shadow-none translate-x-0 hover:translate-x-[2px] hover:translate-y-[2px]";
+                    themeBtnText.textContent = "DARK MODE";
+
+                    businessCard.className = "card-3d bg-white border-2 border-black p-6 sm:p-8 rounded-none relative shadow-brutal-light";
+
+                    updateElementClasses('light');
+                }
+            });
+
+            // Helper to swap inner styling on theme switch
+            function updateElementClasses(mode) {
+                const isDark = mode === 'dark';
+                
+                // Primary CTA button contrast flip
+                if (isDark) {
+                    primaryContactBtn.className = "w-full py-3.5 px-4 bg-white text-black font-mono font-bold text-sm tracking-wider uppercase border-2 border-white hover:bg-black hover:text-white transition-all flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_#888888] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none";
+                    avatarSvg.className = "w-full h-full text-white p-3";
+                } else {
+                    primaryContactBtn.className = "w-full py-3.5 px-4 bg-black text-white font-mono font-bold text-sm tracking-wider uppercase border-2 border-black hover:bg-white hover:text-black transition-all flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_#888888] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none";
+                    avatarSvg.className = "w-full h-full text-black p-3";
+                }
+            }
+
+            // 2. 3D Tilt Effect on Business Card Mouse Movement
+            const perspectiveContainer = document.querySelector('.perspective-container');
+            
+            perspectiveContainer.addEventListener('mousemove', (e) => {
+                const rect = businessCard.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                // Calculate rotation degree (subtle max 8deg)
+                const rotateX = (-y / (rect.height / 2)) * 6;
+                const rotateY = (x / (rect.width / 2)) * 6;
+
+                businessCard.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+
+            perspectiveContainer.addEventListener('mouseleave', () => {
+                businessCard.style.transform = 'rotateX(0deg) rotateY(0deg)';
+            });
+
+            // 3. Modal Open/Close Logic
+            function openModal() {
+                contactModal.classList.remove('opacity-0', 'pointer-events-none');
+                contactModal.classList.add('opacity-100');
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+            }
+
+            function closeModal() {
+                contactModal.classList.add('opacity-0', 'pointer-events-none');
+                contactModal.classList.remove('opacity-100');
+                modalContent.classList.remove('scale-100');
+                modalContent.classList.add('scale-95');
+            }
+
+            primaryContactBtn.addEventListener('click', openModal);
+            closeModalBtn.addEventListener('click', closeModal);
+            closeModalBtnBottom.addEventListener('click', closeModal);
+
+            // Close modal when clicking outside content area
+            contactModal.addEventListener('click', (e) => {
+                if (e.target === contactModal) closeModal();
+            });
+
+            // 4. Toast Notification & Copy Email Function
+            function showToast(message) {
+                toastText.textContent = message;
+                toastNotification.classList.remove('opacity-0', 'translate-y-8', 'pointer-events-none');
+                toastNotification.classList.add('opacity-100', 'translate-y-0');
+
+                setTimeout(() => {
+                    toastNotification.classList.remove('opacity-100', 'translate-y-0');
+                    toastNotification.classList.add('opacity-0', 'translate-y-8', 'pointer-events-none');
+                }, 2500);
+            }
+
+            function copyToClipboard(text) {
+                // Fallback copy method for standard browser context
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        showToast('已複製信箱 / EMAIL COPIED!');
+                    }).catch(() => {
+                        fallbackCopyText(text);
+                    });
+                } else {
+                    fallbackCopyText(text);
+                }
+            }
+
+            function fallbackCopyText(text) {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                textArea.style.position = "fixed";
+                textArea.style.left = "-9999px";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast('已複製信箱 / EMAIL COPIED!');
+                } catch (err) {
+                    showToast('複製失敗，請手動選取');
+                }
+                document.body.removeChild(textArea);
+            }
+
+            copyEmailBtn.addEventListener('click', () => {
+                copyToClipboard('wenhui.luo.design@example.com');
+            });
+
+            document.querySelectorAll('.copy-modal-email').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    copyToClipboard('wenhui.luo.design@example.com');
+                });
+            });
+
+            // 5. Custom Avatar Switcher (File Upload / Preview)
+            changeAvatarBtn.addEventListener('click', () => {
+                avatarFileInput.click();
+            });
+
+            avatarFileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        avatarImage.src = event.target.result;
+                        avatarImage.classList.remove('hidden');
+                        avatarSvg.classList.add('hidden');
+                        showToast('頭像已更換 / AVATAR UPDATED');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
